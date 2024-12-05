@@ -1,0 +1,3 @@
+#!/bin/sh
+
+aide -c $_CONF_INTEGRITY_CONFIGURATION_FILE --check

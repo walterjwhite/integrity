@@ -1,0 +1,25 @@
+#!/bin/sh
+
+import git:install/extension.sh
+import git:activity/activity.sh
+import init.sh
+
+_integrity_before_each() {
+	_INTEGRITY_PLUGIN_DATA_PATH=$_INTEGRITY_PROCESSED_DATA_RECORDS_PATH/$_EXTENSION_NAME
+}
+
+_integrity_init _warn "Skipping check of database since it was just initialized"
+
+_INTEGRITY_DECADE_DATE_PATH=$_INTEGRITY_DATA_PATH/$(_activity_decade_path)
+
+_INTEGRITY_RAW_DATA_FILE=$_INTEGRITY_DECADE_DATE_PATH/raw
+mkdir -p $(dirname $_INTEGRITY_RAW_DATA_FILE)
+
+aide -c $_CONF_INTEGRITY_CONFIGURATION_FILE --check |
+	$_CONF_INSTALL_GNU_GREP -P '[dfl]{1}[a-zA-Z\+\-\\. ]{12}: ' >$_INTEGRITY_RAW_DATA_FILE
+
+_INTEGRITY_PROCESSED_DATA_RECORDS_PATH=$_INTEGRITY_DECADE_DATE_PATH/processed
+mkdir -p $_INTEGRITY_PROCESSED_DATA_RECORDS_PATH
+
+_run_extensions
+

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+import init.sh
+
+_integrity_init
+
+_INTEGRITY_LATEST_RECORDS_PATH=$(find -s $_INTEGRITY_DATA_PATH -type d -depth 1 | tail -1)
+
+find -s $_INTEGRITY_LATEST_RECORDS_PATH/processed -type f -exec $_CONF_INTEGRITY_RECORD_VIEWER {} \;
+
+_continue_if "Update integrity database?" "Y/n" || _error "Not updating integrity database"
+
+aide -c $_CONF_INTEGRITY_CONFIGURATION_FILE --update
+
